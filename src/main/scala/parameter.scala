@@ -2,7 +2,6 @@ package com
 import swing._
 import event._
 import java.awt.{Color, Graphics2D, Point, geom}
-
 abstract class parameter{
     def getComponent() : Component
 }

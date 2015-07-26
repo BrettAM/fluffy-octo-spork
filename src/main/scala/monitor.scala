@@ -1,5 +1,4 @@
 package com
-import com.XrandrParser
 import scala.util.parsing.combinator._
 import scala.language.postfixOps
 import sys.process._

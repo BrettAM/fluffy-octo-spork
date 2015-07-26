@@ -1,21 +1,16 @@
 package com
-import com._
 import swing._
 import event._
     /*
+        TODO
         disable dpms and screensaver for a certain amount of time
-        Add a way to save and store different monitor configurations
-        add a way to save monitor state to x config file
-        add a way to lock together brightnesses
+        save and store different monitor configurations
+        save monitor state as x config file
+        optionally lock together brightnesses
+        cmd arg to launch in popup mode at the cursor
     */
 object main extends SimpleSwingApplication{
-    //used to stop the garbage collector from stealing callbacks
     val monitors = Monitor.get().filter(x=>x.connected)
-
-    val res = for(res <- monitors.head.resList) yield {
-        res.toString -> (() => println("Set to "+res))//setRes(res))
-    }
-
     def top = new MainFrame {
         title = "XRW"
         contents = new BoxPanel(Orientation.Vertical) {
