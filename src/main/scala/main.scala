@@ -39,10 +39,22 @@ object main extends SimpleSwingApplication{
                     monitor.brightness = d
                     refreshDisplay()
                 }
+                def setEnabled(e: Boolean): Unit = {
+                    monitor.enabled = e
+                    refreshDisplay()
+                }
                 val res = for(res <- monitor.resList) yield {
                     res.toString -> (() => setRes(res))
                 }
+                val state = {
+                    val l = List(
+                            ("On", ()=>setEnabled(true)),
+                            ("Off", ()=>setEnabled(false))
+                        )
+                    if(monitor.enabled) l else l.reverse
+                }
                 val parameters :List[parameter] = List(
+                    new choiceList(state),
                     new choiceList(res),
                     new caseParam(monitor.rotation, Rotation.all, setRot(_:Rotation)),
                     new caseParam(monitor.reflection, Reflection.all, setRef(_:Reflection)),

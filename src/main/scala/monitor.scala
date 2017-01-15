@@ -34,7 +34,8 @@ class Monitor(
         activeRes: Res,
         var position: Res,
         var rotation: Rotation,
-        var reflection: Reflection
+        var reflection: Reflection,
+        var enabled: Boolean
             ){
     var resList: List[Res] = Nil
     var brightness = 1.0
@@ -48,11 +49,17 @@ class Monitor(
     }
     def publish(){
         val cmd = "xrandr --output " + name +
+            (
+                if(!enabled) {
+                    " --off "
+                } else {
                     " --brightness " + brightness +
-                    " --mode " + rawRes +
-                    " --pos " + position +
-                    " --rotate " + rotation +
-                    " --reflect " + reflection
+                        " --mode " + rawRes +
+                        " --pos " + position +
+                        " --rotate " + rotation +
+                        " --reflect " + reflection
+                }
+            )
         cmd !;
         println(cmd);
     }

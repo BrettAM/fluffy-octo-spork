@@ -11,20 +11,20 @@ object XrandrParser extends JavaTokenParsers {
     def statusLine: Parser[Monitor] =
             word ~ conState ~ (resBlock | "".r) ~ rotation ~ reflection <~ line ^^ {
         case name~cntd~resPos~rot~ref => {
-            val (res, pos) = resPos match {
-                case rp: (Res @unchecked,Res @unchecked) => rp
-                case _ => (new Res(0,0), new Res(0,0))
+            val (res, pos, offstate) = resPos match {
+                case rp: (Res @unchecked,Res @unchecked, Boolean @unchecked) => rp
+                case _ => (new Res(0,0), new Res(0,0), false)
             }
-            new Monitor(name, cntd, res, pos, rot, ref)
+            new Monitor(name, cntd, res, pos, rot, ref, offstate)
         }
     }
     def conState: Parser[Boolean] = """\s*(connected|disconnected)""".r ^^ {
         case "connected" => true
         case _ => false
     }
-    def resBlock: Parser[(Res,Res)] =
+    def resBlock: Parser[(Res,Res,Boolean)] =
         """\s*""".r ~> integer ~ "x" ~ integer ~ "+" ~ integer ~ "+" ~ integer ^^ {
-            case rx~_~ry~_~px~_~py => (new Res(rx,ry),new Res(px, py))
+            case rx~_~ry~_~px~_~py => (new Res(rx,ry),new Res(px, py),true)
         }
     def rotation: Parser[Rotation] = """\s*(right|left|inverted)?""".r ^^ {
         case "right" => Rotation.right
