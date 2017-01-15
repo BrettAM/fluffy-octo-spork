@@ -47,19 +47,22 @@ class Monitor(
     def resolution_= (r: Res) {
         rawRes = r
     }
+    def getCommand(): String = {
+        "xrandr --output " + name +
+        (
+            if(!enabled) {
+                " --off "
+            } else {
+                " --brightness " + brightness +
+                    " --mode " + rawRes +
+                    " --pos " + position +
+                    " --rotate " + rotation +
+                    " --reflect " + reflection
+            }
+        )
+    }
     def publish(){
-        val cmd = "xrandr --output " + name +
-            (
-                if(!enabled) {
-                    " --off "
-                } else {
-                    " --brightness " + brightness +
-                        " --mode " + rawRes +
-                        " --pos " + position +
-                        " --rotate " + rotation +
-                        " --reflect " + reflection
-                }
-            )
+        val cmd = getCommand()
         cmd !;
         println(cmd);
     }

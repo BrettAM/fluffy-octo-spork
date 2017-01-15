@@ -1,4 +1,6 @@
 package com
+import java.io._
+import javax.swing.JFileChooser
 import swing._
 import event._
     /*
@@ -65,17 +67,36 @@ object main extends SimpleSwingApplication{
                 }
             }
             contents += new BoxPanel(Orientation.Horizontal) {
-                val applyButton = new Button("Apply"){
-                    maximumSize = new Dimension(8000,8000)
+                val maxButtonSize = new Dimension(8000,8000)
+                val ApplyButton = new Button("Apply"){
+                    maximumSize = maxButtonSize
                 }
-                listenTo(applyButton)
+                val SaveButton = new Button("Save"){
+                    maximumSize = maxButtonSize
+                }
+                listenTo(ApplyButton)
+                listenTo(SaveButton)
                 reactions += {
-                    case ButtonClicked(_) => {
+                    case ButtonClicked(ApplyButton) => {
                         for(monitor <- monitors) monitor.publish()
                         refreshDisplay()
                     }
+                    case ButtonClicked(SaveButton) => {
+                        val fb = new JFileChooser()
+                        val result = fb.showOpenDialog(null)
+                        if(result == JFileChooser.APPROVE_OPTION) {
+                            val file = fb.getSelectedFile()
+                            val command = "#!/bin/bash\n"+
+                              monitors.map(m => m.getCommand()).mkString("\n")
+                            val writer = new PrintWriter(file)
+                            writer.print(command)
+                            writer.close()
+                            file.setExecutable(true)
+                        }
+                    }
                 }
-                contents += applyButton
+                contents += ApplyButton
+                contents += SaveButton
             }
         }
     }
