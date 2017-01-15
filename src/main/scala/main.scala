@@ -8,11 +8,13 @@ import event._
         save monitor state as x config file
         optionally lock together brightnesses
         cmd arg to launch in popup mode at the cursor
+        Get the swing components look nicer and match the monitor widget
     */
 object main extends SimpleSwingApplication{
     val monitors = Monitor.get().filter(x=>x.connected)
     def top = new MainFrame {
-        title = "XRW"
+        peer.setType(java.awt.Window.Type.UTILITY)
+        title = "Fluffy octo spork"
         contents = new BoxPanel(Orientation.Vertical) {
             val positionMover = new positionWidget(monitors)
             val refreshDisplay : ()=>Unit = () => {

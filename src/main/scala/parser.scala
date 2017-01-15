@@ -1,5 +1,6 @@
 package com
 import scala.util.parsing.combinator._
+
 object XrandrParser extends JavaTokenParsers {
     def main: Parser[List[Monitor]] = line ~> rep(monitor) ^^ {
         case monitors => monitors

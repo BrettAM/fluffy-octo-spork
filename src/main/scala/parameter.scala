@@ -175,7 +175,7 @@ class positionWidget(monitors: List[Monitor]) extends Panel {
     reactions += {
         case e: MousePressed => {
             val press = relPos(e.point)
-            val found = mGlyphs.find( _.hit(press) )
+            val found = mGlyphs.reverseIterator.find( _.hit(press) )
             if(found != None){
                 clicked = found.get
                 val others = mGlyphs.filter(x => x != clicked)
