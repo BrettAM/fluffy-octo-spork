@@ -1,4 +1,3 @@
-package com
 import scala.util.parsing.combinator._
 
 object XrandrParser extends JavaTokenParsers {

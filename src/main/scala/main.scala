@@ -1,8 +1,8 @@
-package com
 import java.io._
 import javax.swing.JFileChooser
 import swing._
 import event._
+
     /*
         TODO
         disable dpms and screensaver for a certain amount of time
